@@ -41,7 +41,7 @@ pub struct EmbeddingMessage {
     pub query: String,
 }
 
-/// Message requesting compaction / optimization of the LanceDB table.
+/// Message requesting compaction / optimization of the Qdrant collection.
 #[derive(Serialize, Deserialize)]
 pub struct OptimizeMessage {}
 
@@ -151,6 +151,6 @@ pub struct StatsData {
     pub per_project: std::collections::BTreeMap<String, usize>,
 }
 
-/// Message asking the actor to re-open its LanceDB table (used after snapshot restore).
+/// Message asking the actor to re-open its Qdrant collection (used after snapshot restore).
 #[derive(Serialize, Deserialize)]
 pub struct ReopenMessage {}

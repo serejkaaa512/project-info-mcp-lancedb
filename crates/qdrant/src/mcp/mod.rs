@@ -252,8 +252,8 @@ impl MemoryToolHandler {
             serde_json::json!({
                 "name": "piil",
                 "version": env!("CARGO_PKG_VERSION"),
-                "title": "Project Info MCP (LanceDB)",
-                "description": "Persistent project memory over LanceDB with hybrid search",
+                "title": "Project Info MCP (Qdrant)",
+                "description": "Persistent project memory over Qdrant with vector search",
             }),
         );
         if let Some(instructions) = details.instructions.clone() {
