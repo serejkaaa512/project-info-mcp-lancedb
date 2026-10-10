@@ -15,15 +15,20 @@ const FILE_CATEGORY: &str = "file";
 )]
 #[derive(Debug, ::serde::Deserialize, ::serde::Serialize, JsonSchema)]
 pub struct SaveFileDescription {
-    /// Unique record key: relative path to the file (for example, `src/auth.rs`).
+    /// Unique record key: relative path to the file
+    /// (for example, `src/auth.rs`).
     pub file_path: String,
-    /// Short description of the file's content: purpose, key functions/types it defines, how it is used.
+    /// Short description of the file's content:
+    /// purpose, key functions/types it defines, how
+    /// it is used.
     pub description: String,
-    /// Project scope; defaults to the server's PROJECT_NAME when omitted.
+    /// Project scope; defaults to the server's
+    /// PROJECT_NAME when omitted.
     pub project: Option<String>,
 }
 
-/// Executes the save-file tool by upserting the file description under the `file` category.
+/// Executes the save-file tool by upserting the file
+/// description under the `file` category.
 pub async fn execute(actor: ActorRef<ProjectInfoActor>, args: SaveFileDescription) -> String {
     let msg = UpsertMessage {
         id: args.file_path,

@@ -7,11 +7,13 @@ use rust_mcp_sdk::macros::{JsonSchema, mcp_tool};
 #[mcp_tool(name = "memory_stats", description = "Show memory usage statistics")]
 #[derive(Debug, Default, ::serde::Deserialize, ::serde::Serialize, JsonSchema)]
 pub struct MemoryStats {
-    /// Project scope; defaults to the server's PROJECT_NAME. Use "*" for all projects.
+    /// Project scope; defaults to the server's
+    /// PROJECT_NAME. Use "*" for all projects.
     pub project: Option<String>,
 }
 
-/// Executes the stats tool by sending a stats request to the project info actor.
+/// Executes the stats tool by sending a stats request
+/// to the project info actor.
 pub async fn execute(
     actor: ActorRef<crate::actors::project_info::ProjectInfoActor>,
     args: MemoryStats,

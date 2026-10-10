@@ -8,7 +8,8 @@ use crate::actors::project_info::{ProjectInfoActor, format::format_stats};
 impl Message<StatsMessage> for ProjectInfoActor {
     type Reply = Result<String, String>;
 
-    /// Aggregates stats via the backend store and replies with a formatted summary.
+    /// Aggregates stats via the backend store and replies
+    /// with a formatted summary.
     async fn handle(
         &mut self,
         msg: StatsMessage,

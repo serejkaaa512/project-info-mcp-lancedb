@@ -12,7 +12,7 @@ description: This skill provides the AI agent with a high-performance, persisten
 *   **Parameters:**
     *   `info_id` (string): Unique identifier — snake_case for concepts (e.g., `jwt_validation_logic`). Relative file paths are reserved for `save_file_description`, because ids are unique per project (see `project` below).
     *   `content` (string): The distilled code snippet, architectural summary, or text block to remember.
-    *   `category` (string): Strict isolation scope. Must be one of: `architecture`, `file`, `code_contract`, `todo`, `changelog`.
+    *   `category` (string): Strict isolation scope. Must be one of: `architecture`, `codestyle`, `file`, `function`, `code_contract`, `todo`, `changelog`.
     *   `project` (string, optional): Project scope. Defaults to the server's `PROJECT_NAME` when omitted. The dedup key is `(info_id, project)`, so the same id can exist in many projects without collision.
 *   **Optimization Note:** The underlying Rust actor computes a SHA-256 hash before executing. If the data is identical, the GPU text embedding inference is skipped automatically.
 
@@ -70,6 +70,7 @@ description: This skill provides the AI agent with a high-performance, persisten
     *   Use `file` for per-file content descriptions written via `save_file_description` (id = relative file path).
     *   Use `function` for per-function descriptions written via `save_function_description` (id = `<file_path>::<function_name>` or `<file_path>::<struct_name>::<function_name>`).
     *   Use `architecture` for configuration formats, core dependencies, API endpoint signatures, and ADRs.
+    *   Use `codestyle` for code style rules and conventions — one focused rule per record via `upsert_project_info` (e.g., `rust_naming_conventions`, `rust_error_handling`, `rust_import_grouping`, `rust_qa_workflow`). Content must state the rule, what to avoid, and a minimal good/bad example, and include the keywords future queries will use (naming, clippy/rustfmt, `?`/`if let`/iterator chains, `thiserror`/`anyhow`, import grouping, `///` docs, `cargo fmt`/`cargo clippy`/`cargo test --all`). Search it with `hybrid_search_memory` + `category: "codestyle"` before writing or editing code.
     *   Use `code_contract` for internal types, interfaces, traits, and shared state structures.
     *   Use `todo` to capture structural bugs, tech debt, and immediate feature requirements.
     *   Use `changelog` to summarize your own work at the end of a session (files modified, logic added, and architectural impacts).

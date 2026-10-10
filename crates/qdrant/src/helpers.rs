@@ -13,7 +13,8 @@ use serde_json::json;
 /// Default Qdrant collection name.
 pub const DEFAULT_COLLECTION: &str = "project_memory";
 
-/// Builds a Qdrant `PointStruct` from a project info record with a named embedding vector.
+/// Builds a Qdrant `PointStruct` from a project info
+/// record with a named embedding vector.
 #[allow(clippy::too_many_arguments)]
 pub fn build_point(
     id: &str,
@@ -64,7 +65,8 @@ pub fn build_filter(
     Some(qdrant_client::qdrant::Filter::must(conditions))
 }
 
-/// Creates a Qdrant collection with named vector configuration (one vector per embedding model).
+/// Creates a Qdrant collection with named vector
+/// configuration (one vector per embedding model).
 /// If the collection exists but the vector name is missing, adds it.
 pub async fn ensure_collection(
     client: &Qdrant,

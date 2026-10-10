@@ -13,7 +13,9 @@ use response::EmbeddingResponse;
 
 use crate::actors::embedding::Embedder;
 
-/// Encoding format for the embeddings request. The OpenAI-compatible endpoint expects "float" for float32 vectors.
+/// Encoding format for the embeddings request. The
+/// OpenAI-compatible endpoint expects "float" for
+/// float32 vectors.
 const ENCODING_FORMAT: &str = "float";
 
 /// Kameo actor that requests text embeddings.
@@ -29,7 +31,9 @@ pub struct EmbeddingActor {
 }
 
 impl EmbeddingActor {
-    /// Creates the actor with the given HTTP client, embeddings endpoint URL, model name, and optional pooling strategy.
+    /// Creates the actor with the given HTTP client,
+    /// embeddings endpoint URL, model name, and
+    /// optional pooling strategy.
     pub fn new(embeddings_url: String, model: String, pooling: Option<String>) -> Self {
         EmbeddingActor {
             http_client: Client::new(),

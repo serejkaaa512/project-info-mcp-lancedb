@@ -77,7 +77,8 @@ pub async fn version(State(state): State<AppState>) -> Json<serde_json::Value> {
     }))
 }
 
-/// Single-collection view (the `project_memory` table with per-project breakdown).
+/// Single-collection view (the `project_memory` table
+/// with per-project breakdown).
 pub async fn collections(
     State(state): State<AppState>,
 ) -> Result<Json<serde_json::Value>, ApiError> {

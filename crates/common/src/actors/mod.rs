@@ -105,7 +105,8 @@ pub struct StatsData {
     pub per_project: BTreeMap<String, usize>,
 }
 
-/// Message listing stored points with optional filters (REST API / dashboard).
+/// Message listing stored points with optional
+/// filters (REST API / dashboard).
 #[derive(Serialize, Deserialize)]
 pub struct ListPointsMessage {
     /// Project scope; empty means default, `"*"` means all projects.
@@ -134,7 +135,8 @@ pub struct DeletePointMessage {
 /// Message requesting structured stats (REST API / dashboard).
 #[derive(Serialize, Deserialize)]
 pub struct StatsStructuredMessage {
-    /// Project scope; empty means default, `"*"` aggregates all projects.
+    /// Project scope; empty means default, `"*"`
+    /// aggregates all projects.
     #[serde(default)]
     pub project: String,
 }
@@ -153,6 +155,7 @@ pub struct StructuredSearchMessage {
     pub project: String,
 }
 
-/// Message asking the actor to re-open its LanceDB table (used after snapshot restore).
+/// Message asking the actor to re-open its LanceDB
+/// table (used after snapshot restore).
 #[derive(Serialize, Deserialize)]
 pub struct ReopenMessage {}

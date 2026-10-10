@@ -12,7 +12,9 @@ use crate::store::Record;
 impl Message<UpsertMessage> for ProjectInfoActor {
     type Reply = Result<String, String>;
 
-    /// Hashes the content, skips writes when unchanged, then embeds and upserts the record via the backend store.
+    /// Hashes the content, skips writes when unchanged,
+    /// then embeds and upserts the record via the
+    /// backend store.
     async fn handle(
         &mut self,
         msg: UpsertMessage,

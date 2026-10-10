@@ -15,7 +15,8 @@ use kameo::actor::{Actor, ActorRef};
 use crate::actors::embedding;
 use crate::store::MemoryStore;
 
-/// Kameo actor managing project info records via a backend storage implementation.
+/// Kameo actor managing project info records via a
+/// backend storage implementation.
 pub struct ProjectInfoActor {
     store: Box<dyn MemoryStore>,
     embedder: Box<dyn embedding::Embedder>,
@@ -38,7 +39,8 @@ impl ProjectInfoActor {
         }
     }
 
-    /// Resolves the effective project scope: explicit value wins, otherwise the actor default.
+    /// Resolves the effective project scope: explicit
+    /// value wins, otherwise the actor default.
     pub fn resolve_project(&self, project: &str) -> String {
         let trimmed = project.trim();
         if trimmed.is_empty() {
@@ -64,7 +66,8 @@ impl Actor for ProjectInfoActor {
 
     type Error = anyhow::Error;
 
-    /// Creates the actor from the arguments provided at spawn time.
+    /// Creates the actor from the arguments provided at
+    /// spawn time.
     async fn on_start(args: Self::Args, _actor_ref: ActorRef<Self>) -> Result<Self, Self::Error> {
         Ok(args)
     }

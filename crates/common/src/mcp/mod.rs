@@ -44,16 +44,19 @@ tool_box!(
     ]
 );
 
-/// MCP server handler that dispatches tool calls to the `ProjectInfoActor`.
+/// MCP server handler that dispatches tool calls to
+/// the `ProjectInfoActor`.
 pub struct MemoryToolHandler {
     actor: ActorRef<ProjectInfoActor>,
     version: &'static str,
 }
 
 impl MemoryToolHandler {
-    /// Creates a handler that dispatches tool calls to the given project info actor.
+    /// Creates a handler that dispatches tool calls to
+    /// the given project info actor.
     ///
-    /// `version` is the server package version reported in the MCP handshake.
+    /// `version` is the server package version reported
+    /// in the MCP handshake.
     pub fn new(actor: ActorRef<ProjectInfoActor>, version: &'static str) -> Self {
         Self { actor, version }
     }
@@ -78,7 +81,8 @@ impl ServerHandler for MemoryToolHandler {
         })
     }
 
-    /// Dispatches a tool call to the matching `execute` function.
+    /// Dispatches a tool call to the matching `execute`
+    /// function.
     async fn handle_call_tool_request(
         &self,
         params: CallToolRequestParams,
@@ -196,7 +200,9 @@ impl ServerHandler for MemoryToolHandler {
         })
     }
 
-    /// Handles requests that missed standard deserialization (classic-client compatibility shim).
+    /// Handles requests that missed standard
+    /// deserialization (classic-client compatibility
+    /// shim).
     async fn handle_custom_request(
         &self,
         request: CustomRequest,
@@ -313,9 +319,11 @@ impl MemoryToolHandler {
         })
     }
 
-    /// `tools/call` arriving as `CustomRequest` (classic client omitted the
-    /// required `_meta`, so untagged deserialization missed the standard
-    /// variant). Parses `name`/`arguments` manually and runs the tool.
+    /// `tools/call` arriving as `CustomRequest` (classic
+    /// client omitted the required `_meta`, so untagged
+    /// deserialization missed the standard variant).
+    /// Parses `name`/`arguments` manually and runs the
+    /// tool.
     async fn call_tool_from_custom(
         &self,
         request: CustomRequest,

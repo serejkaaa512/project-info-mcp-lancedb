@@ -8,7 +8,8 @@ use rust_mcp_sdk::macros::{JsonSchema, mcp_tool};
 #[derive(Debug, Default, ::serde::Deserialize, ::serde::Serialize, JsonSchema)]
 pub struct OptimizeProjectInfo {}
 
-/// Executes the optimize tool by sending an optimize request to the project info actor.
+/// Executes the optimize tool by sending an optimize
+/// request to the project info actor.
 pub async fn execute(actor: ActorRef<crate::actors::project_info::ProjectInfoActor>) -> String {
     let msg = crate::actors::OptimizeMessage {};
     match actor.ask(msg).await {

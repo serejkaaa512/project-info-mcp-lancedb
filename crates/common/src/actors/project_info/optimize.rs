@@ -8,7 +8,8 @@ use crate::actors::project_info::ProjectInfoActor;
 impl Message<OptimizeMessage> for ProjectInfoActor {
     type Reply = Result<String, String>;
 
-    /// Optimizes the backend storage and replies with a confirmation message.
+    /// Optimizes the backend storage and replies with a
+    /// confirmation message.
     async fn handle(
         &mut self,
         _msg: OptimizeMessage,

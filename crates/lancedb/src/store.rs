@@ -28,7 +28,8 @@ impl LanceStore {
     ///
     /// # Errors
     ///
-    /// Returns the raw LanceDB error text when connecting or table creation fails.
+    /// Returns the raw LanceDB error text when connecting
+    /// or table creation fails.
     pub async fn new(db_dir: String, vector_dimension: usize) -> Result<Self, String> {
         let db: Connection = connect(&db_dir)
             .execute()

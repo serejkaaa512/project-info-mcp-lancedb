@@ -5,15 +5,19 @@ use rust_mcp_sdk::macros::{JsonSchema, mcp_tool};
 
 use crate::actors::{UpsertMessage, project_info::ProjectInfoActor};
 
-/// Category for per-function content descriptions (unique id = file path + scope + function).
+/// Category for per-function content descriptions
+/// (unique id = file path + scope + function).
 pub const FUNCTION_CATEGORY: &str = "function";
 
 /// Builds the unique record id for a function description.
 ///
-/// Format: `<file_path>::<function_name>` for free functions, or
-/// `<file_path>::<struct_name>::<function_name>` for struct/impl-associated functions.
+/// Format: `<file_path>::<function_name>` for free
+/// functions, or
+/// `<file_path>::<struct_name>::<function_name>` for
+/// struct/impl-associated functions.
 ///
-/// Example: `src/auth.rs::validate_jwt` or `src/auth.rs::AuthService::validate`.
+/// Example: `src/auth.rs::validate_jwt` or
+/// `src/auth.rs::AuthService::validate`.
 pub fn build_function_id(
     file_path: &str,
     struct_name: Option<&str>,
@@ -35,19 +39,25 @@ pub fn build_function_id(
 )]
 #[derive(Debug, ::serde::Deserialize, ::serde::Serialize, JsonSchema)]
 pub struct SaveFunctionDescription {
-    /// Relative path to the file containing the function (for example, `src/auth.rs`).
+    /// Relative path to the file containing the
+    /// function (for example, `src/auth.rs`).
     pub file_path: String,
     /// Function or method name (for example, `validate_jwt`).
     pub function_name: String,
-    /// Struct/impl name for associated functions/methods (omit for free functions).
+    /// Struct/impl name for associated
+    /// functions/methods (omit for free functions).
     pub struct_name: Option<String>,
-    /// Short description of the function: purpose, parameters/return, side effects, how it is used.
+    /// Short description of the function: purpose,
+    /// parameters/return, side effects, how it is
+    /// used.
     pub description: String,
-    /// Project scope; defaults to the server's PROJECT_NAME when omitted.
+    /// Project scope; defaults to the server's
+    /// PROJECT_NAME when omitted.
     pub project: Option<String>,
 }
 
-/// Executes the save-function tool by upserting the description under the `function` category.
+/// Executes the save-function tool by upserting the
+/// description under the `function` category.
 pub async fn execute(actor: ActorRef<ProjectInfoActor>, args: SaveFunctionDescription) -> String {
     let id = build_function_id(
         &args.file_path,

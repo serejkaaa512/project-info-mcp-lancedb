@@ -5,7 +5,8 @@ use std::env;
 use crate::helpers::DEFAULT_COLLECTION;
 use piim_common::{actors::embedding::config::EmbeddingBackend, config::CommonConfig};
 
-/// Runtime configuration loaded from environment variables, with fallback defaults.
+/// Runtime configuration loaded from environment
+/// variables, with fallback defaults.
 pub struct Config {
     /// URL of the Qdrant server (`QDRANT_URL`).
     pub qdrant_url: String,
@@ -14,7 +15,8 @@ pub struct Config {
     /// Name of the Qdrant collection (`QDRANT_COLLECTION`).
     pub collection_name: String,
     /// URL of the OpenAI-compatible embeddings endpoint (`EMBEDDINGS_URL`).
-    /// Used only when [`Self::embedding_backend`] is [`EmbeddingBackend::Http`].
+    /// Used only when [`Self::embedding_backend`] is
+    /// [`EmbeddingBackend::Http`].
     pub embeddings_url: String,
     /// Embedding model name (`EMBEDDINGS_MODEL`).
     pub model: String,
@@ -27,14 +29,17 @@ pub struct Config {
     pub vector_dimension: usize,
     /// Default project name used to scope records (`PROJECT_NAME`).
     ///
-    /// Multiple projects can share one Qdrant collection: every point carries
-    /// a `project` payload field and all reads/writes are filtered by it. The value
-    /// can be overridden per tool call via the optional `project` argument.
+    /// Multiple projects can share one Qdrant collection:
+    /// every point carries a `project` payload field and
+    /// all reads/writes are filtered by it. The value
+    /// can be overridden per tool call via the optional
+    /// `project` argument.
     pub project: String,
 }
 
 impl Config {
-    /// Loads configuration from environment variables, falling back to defaults when unset or invalid.
+    /// Loads configuration from environment variables,
+    /// falling back to defaults when unset or invalid.
     pub fn get_from_env() -> Config {
         let qdrant_url =
             env::var("QDRANT_URL").unwrap_or_else(|_| "http://localhost:6333".to_string());

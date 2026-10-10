@@ -37,11 +37,13 @@ pub fn table_schema(dimension: usize) -> Arc<Schema> {
     ]))
 }
 
-/// Builds a single Arrow `RecordBatch` containing one project info record with its embedding vector.
+/// Builds a single Arrow `RecordBatch` containing one
+/// project info record with its embedding vector.
 ///
 /// # Errors
 ///
-/// Returns an error when `vector` length does not match `dimension`, or when the
+/// Returns an error when `vector` length does not match
+/// `dimension`, or when the
 /// resulting `RecordBatch` fails schema validation.
 #[allow(clippy::too_many_arguments)]
 pub fn build_arrow_record(

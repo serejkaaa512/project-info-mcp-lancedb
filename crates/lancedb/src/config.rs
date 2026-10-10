@@ -4,7 +4,8 @@ use std::env;
 
 use piim_common::{actors::embedding::config::EmbeddingBackend, config::CommonConfig};
 
-/// Runtime configuration loaded from environment variables, with fallback defaults.
+/// Runtime configuration loaded from environment
+/// variables, with fallback defaults.
 pub struct Config {
     /// Path to the LanceDB database directory (`LANCEDB_PATH`).
     pub db_dir: String,
@@ -22,7 +23,8 @@ pub struct Config {
     /// a `project` column and all reads/writes are filtered by it. The value
     /// can be overridden per tool call via the optional `project` argument.
     pub project: String,
-    /// HTTP port for the REST API + dashboard (`HTTP_PORT`, default `6333` Qdrant-style).
+    /// HTTP port for the REST API + dashboard
+    /// (`HTTP_PORT`, default `6333` Qdrant-style).
     /// Set to `0` or empty to disable the HTTP server (stdio MCP only).
     pub http_port: u16,
     /// Directory where `.tar.gz` DB snapshots are stored (`SNAPSHOT_DIR`).
@@ -30,7 +32,8 @@ pub struct Config {
 }
 
 impl Config {
-    /// Loads configuration from environment variables, falling back to defaults when unset or invalid.
+    /// Loads configuration from environment variables,
+    /// falling back to defaults when unset or invalid.
     pub fn get_from_env() -> Config {
         let db_dir =
             env::var("LANCEDB_PATH").unwrap_or_else(|_| "./.opencode_memory/lance_db".to_string());

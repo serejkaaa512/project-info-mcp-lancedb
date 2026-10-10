@@ -8,7 +8,8 @@ use crate::actors::project_info::{ProjectInfoActor, format::format_matches};
 impl Message<SearchMessage> for ProjectInfoActor {
     type Reply = Result<String, String>;
 
-    /// Embeds the query, runs the backend search, and replies with formatted matches.
+    /// Embeds the query, runs the backend search, and
+    /// replies with formatted matches.
     async fn handle(
         &mut self,
         msg: SearchMessage,

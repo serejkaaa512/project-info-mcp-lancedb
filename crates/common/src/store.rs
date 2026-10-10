@@ -59,7 +59,8 @@ pub trait MemoryStore: Send + Sync + 'static {
         limit: usize,
     ) -> Result<Vec<SearchHit>, String>;
 
-    /// Counts records for the `(project, category)` scope, ignoring any text query.
+    /// Counts records for the `(project, category)`
+    /// scope, ignoring any text query.
     async fn count(&self, project: &str, category: Option<&str>) -> Result<usize, String>;
 
     /// Lists all records for the `(project, category)` scope, before the

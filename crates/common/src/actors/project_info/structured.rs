@@ -22,7 +22,8 @@ impl Message<StatsStructuredMessage> for ProjectInfoActor {
 impl Message<StructuredSearchMessage> for ProjectInfoActor {
     type Reply = Result<Vec<SearchHit>, String>;
 
-    /// Embeds the query and runs the backend structured search, replying with structured hits.
+    /// Embeds the query and runs the backend structured
+    /// search, replying with structured hits.
     async fn handle(
         &mut self,
         msg: StructuredSearchMessage,

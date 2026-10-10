@@ -7,7 +7,8 @@ use kameo::actor::{Actor, ActorRef};
 /// Model name used in the HTTP config that maps to a local fastembed model.
 #[derive(Debug, Clone, PartialEq)]
 pub enum FastembedModel {
-    /// BAAI/bge-small-en-v1.5 — 130M params, 384 dims (default fastembed model).
+    /// BAAI/bge-small-en-v1.5 — 130M params, 384 dims
+    /// (default fastembed model).
     BgeSmallEnV15,
     /// BAAI/bge-base-en-v1.5 — 110M params, 768 dims.
     BgeBaseEnV15,

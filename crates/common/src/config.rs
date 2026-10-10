@@ -20,7 +20,9 @@ pub struct CommonConfig {
 }
 
 impl CommonConfig {
-    /// Loads the shared configuration from environment variables, falling back to defaults when unset or invalid.
+    /// Loads the shared configuration from environment
+    /// variables, falling back to defaults when unset
+    /// or invalid.
     pub fn from_env() -> CommonConfig {
         let embeddings_url = env::var("EMBEDDINGS_URL")
             .unwrap_or_else(|_| "http://localhost:8002/v1/embeddings".to_string());

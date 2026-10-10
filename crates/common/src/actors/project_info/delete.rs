@@ -8,7 +8,8 @@ use crate::actors::project_info::ProjectInfoActor;
 impl Message<DeletePointMessage> for ProjectInfoActor {
     type Reply = Result<bool, String>;
 
-    /// Deletes the record matching `(id, project)`; replies `true` when a record existed.
+    /// Deletes the record matching `(id, project)`;
+    /// replies `true` when a record existed.
     async fn handle(
         &mut self,
         msg: DeletePointMessage,
