@@ -23,12 +23,6 @@ Both binaries are driven by **`piim-common`** ([`crates/common`](crates/common))
 ## Prerequisites
 
 - Rust 1.85+ (edition 2024 workspace; `cargo build`)
-- A running OpenAI-compatible embeddings endpoint, e.g.:
-  ```bash
-  curl -X POST http://localhost:8002/v1/embeddings \
-    -H 'Content-Type: application/json' \
-    -d '{"input":"hello","model":"qwen3-embed","encoding_format":"float"}'
-  ```
 
 ## Build & Run
 
