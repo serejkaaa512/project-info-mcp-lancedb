@@ -81,7 +81,7 @@ Add to `opencode.json`:
 ```json
 {
   "mcp": {
-    "piim-lance": {
+    "piim": {
       "type": "local",
       "command": ["/full/path/to/target/release/piim-lance"],
       "environment": {

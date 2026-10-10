@@ -148,7 +148,7 @@ impl FastembedBackend {
                     .lock()
                     .map_err(|e| anyhow::anyhow!("lock poisoned: {e}"))?;
                 let results = m.embed(texts)?;
-                Ok(results.into_iter().into_iter().collect())
+                Ok(results)
             }
         }
     }

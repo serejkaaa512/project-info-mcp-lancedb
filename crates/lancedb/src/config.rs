@@ -2,7 +2,7 @@
 
 use std::env;
 
-use piim_common::config::CommonConfig;
+use piim_common::{actors::embedding::config::EmbeddingBackend, config::CommonConfig};
 
 /// Runtime configuration loaded from environment variables, with fallback defaults.
 pub struct Config {
@@ -14,6 +14,8 @@ pub struct Config {
     pub model: String,
     /// Expected embedding vector dimension (`VECTOR_DIMENSION`).
     pub vector_dimension: usize,
+    /// Embedding backend selection.
+    pub embedding_backend: EmbeddingBackend,
     /// Default project name used to scope records (`PROJECT_NAME`).
     ///
     /// Multiple projects can share one LanceDB database: every record carries
@@ -35,11 +37,15 @@ impl Config {
 
         let common = CommonConfig::from_env();
 
+        let embedding_backend = EmbeddingBackend::from_env();
+        let vector_dimension = embedding_backend.dimension();
+
         Config {
             db_dir,
             embeddings_url: common.embeddings_url,
             model: common.model,
-            vector_dimension: common.vector_dimension,
+            vector_dimension,
+            embedding_backend,
             project: common.project,
             http_port: env::var("HTTP_PORT")
                 .ok()

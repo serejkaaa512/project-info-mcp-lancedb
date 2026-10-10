@@ -10,7 +10,6 @@ use std::collections::BTreeMap;
 
 use kameo::actor::Spawn;
 use qdrant_client::Qdrant;
-use reqwest::Client;
 use rust_mcp_sdk::error::SdkResult;
 use rust_mcp_sdk::mcp_server::{McpServerOptions, server_runtime};
 use rust_mcp_sdk::schema::{Implementation, ServerCapabilities, ServerCapabilitiesTools};
@@ -18,11 +17,12 @@ use rust_mcp_sdk::{
     McpServer, ServerDetails, StdioTransport, ToMcpServerHandler, TransportOptions,
 };
 
-use piim_common::actors::embedding;
+use piim_common::actors::embedding::config::EmbeddingBackend;
+use piim_common::actors::embedding::{self, fastembed, http};
 use piim_common::actors::project_info::ProjectInfoActor;
 use piim_common::mcp::MemoryToolHandler;
 
-use crate::config::{Config, EmbeddingBackend};
+use crate::config::Config;
 use crate::helpers::ensure_collection;
 
 /// Main entry point for the `piim` MCP server.
@@ -56,17 +56,17 @@ async fn main() -> SdkResult<()> {
 
     // Create the appropriate embedding actor based on the selected backend.
     let embed_actor = match &config.embedding_backend {
-        EmbeddingBackend::Http => Box::new(embedding::EmbeddingActor::new(
-            Client::new(),
+        EmbeddingBackend::Http => Box::new(http::EmbeddingActor::new(
             config.embeddings_url.clone(),
             config.model.clone(),
             None,
         )) as Box<dyn embedding::Embedder>,
         EmbeddingBackend::Fastembed(model) => {
-            let actor = embedding::fastembed::EmbeddingActor::new_fastembed(model.clone())
-                .map_err(|e| rust_mcp_sdk::error::McpSdkError::Internal {
+            let actor = fastembed::EmbeddingActor::new_fastembed(model.clone()).map_err(|e| {
+                rust_mcp_sdk::error::McpSdkError::Internal {
                     description: format!("Failed to initialize local embedding model: {e}"),
-                })?;
+                }
+            })?;
 
             Box::new(actor) as Box<dyn embedding::Embedder>
         }

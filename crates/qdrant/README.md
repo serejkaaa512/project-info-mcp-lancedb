@@ -115,7 +115,7 @@ Add to `opencode.json`:
 ```json
 {
   "mcp": {
-    "piim-qdrant": {
+    "piim": {
       "type": "local",
       "command": ["/full/path/to/target/release/piim-qdrant"],
       "environment": {
@@ -135,7 +135,7 @@ For HTTP backend (external embeddings API):
 ```json
 {
   "mcp": {
-    "piim-qdrant": {
+    "piim": {
       "type": "local",
       "command": ["/full/path/to/target/release/piim-qdrant"],
       "environment": {
@@ -161,7 +161,7 @@ Add to `~/.config/zed/settings.json`:
 ```json
 {
   "mcp": {
-    "piim-qdrant": {
+    "piim": {
       "command": "/full/path/to/target/release/piim-qdrant",
       "args": [],
       "env": {
@@ -180,7 +180,7 @@ Or via `~/.config/zed/mcp.json`:
 ```json
 {
   "mcp": {
-    "piim-qdrant": {
+    "piim": {
       "command": "/full/path/to/target/release/piim-qdrant",
       "args": [],
       "env": {
