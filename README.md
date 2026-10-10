@@ -52,7 +52,7 @@ See the backend READMEs for copy-paste configs: [piim-lance](crates/lancedb/READ
 
 ## Tools
 
-Both backends expose the same 6 MCP tools (`upsert_project_info`, `save_file_description`, `save_function_description`, `hybrid_search_memory`, `optimize_database`, `memory_stats`). See [crates/lancedb/README.md](crates/lancedb/README.md#tools) for the argument table.
+Both backends expose the same 7 MCP tools (`upsert_project_info`, `delete_project_info`, `save_file_description`, `save_function_description`, `hybrid_search_memory`, `optimize_database`, `memory_stats`). See [crates/lancedb/README.md](crates/lancedb/README.md#tools) for the argument table.
 
 ## LanceDB vs Qdrant — the databases compared
 
@@ -71,7 +71,7 @@ This repo pins `lancedb` **0.40.0** (`piim-lance`) and `qdrant-client` **1.19** 
 
 ## LanceDB vs Qdrant — which backend to pick?
 
-Both binaries expose the same 6 MCP tools and share the `piim-common` core (actors, `MemoryStore` trait, HTTP/fastembed embedding backends, `PROJECT_NAME` scoping). They differ only in where and how vectors are stored.
+Both binaries expose the same 7 MCP tools and share the `piim-common` core (actors, `MemoryStore` trait, HTTP/fastembed embedding backends, `PROJECT_NAME` scoping). They differ only in where and how vectors are stored.
 
 | | `piim-lance` (embedded LanceDB) | `piim-qdrant` (remote Qdrant) |
 |---|---|---|
@@ -89,7 +89,7 @@ Both binaries expose the same 6 MCP tools and share the `piim-common` core (acto
 
 ```text
 ┌───────────────────────  piim-common (crates/common)  ────────────────────────┐
-│ stdin (JSON-RPC) → StdioTransport → MemoryToolHandler  (6 MCP tools)         │
+│ stdin (JSON-RPC) → StdioTransport → MemoryToolHandler  (7 MCP tools)         │
 │                                        │ tools/call                          │
 │                                        ▼                                     │
 │                          ProjectInfoActor (kameo)                            │

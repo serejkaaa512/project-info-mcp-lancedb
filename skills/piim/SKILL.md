@@ -16,7 +16,14 @@ description: This skill provides the AI agent with a high-performance, persisten
     *   `project` (string, optional): Project scope. Defaults to the server's `PROJECT_NAME` when omitted. The dedup key is `(info_id, project)`, so the same id can exist in many projects without collision.
 *   **Optimization Note:** The underlying Rust actor computes a SHA-256 hash before executing. If the data is identical, the GPU text embedding inference is skipped automatically.
 
-### 2. `save_file_description`
+### 2. `delete_project_info`
+*   **Purpose:** Deletes a single project info record by `(id, project)`.
+*   **Parameters:**
+    *   `info_id` (string): Unique record key to delete.
+    *   `project` (string, optional): Project scope; defaults to the server's `PROJECT_NAME`.
+*   **Reply:** `✅ deleted` when a record existed, `ℹ️ not found` otherwise.
+
+### 3. `save_file_description`
 *   **Purpose:** Stores a short description of a file's content in memory; the `(file path, project)` pair is the unique id (stored under the `file` category).
 *   **Parameters:**
     *   `file_path` (string): Unique key within the project — relative path to the file (e.g., `src/auth.rs`). Re-saving the same path in the same project overwrites the previous description.
@@ -24,7 +31,7 @@ description: This skill provides the AI agent with a high-performance, persisten
     *   `project` (string, optional): Project scope; defaults to the server's `PROJECT_NAME`. Always pass the current project name when working outside the default project.
 *   **Optimization Note:** Same SHA-256 dedup as `upsert_project_info` — unchanged descriptions skip embedding.
 
-### 3. `save_function_description`
+### 4. `save_function_description`
 *   **Purpose:** Stores a short description of a single function/method in memory; the unique id is `<file_path>::<function_name>` for free functions, or `<file_path>::<struct_name>::<function_name>` for struct/impl-associated functions (stored under the `function` category, scoped per project).
 *   **Parameters:**
     *   `file_path` (string): Relative path to the file containing the function (e.g., `src/auth.rs`).
@@ -34,7 +41,7 @@ description: This skill provides the AI agent with a high-performance, persisten
     *   `project` (string, optional): Project scope; defaults to the server's `PROJECT_NAME`. Re-saving the same `(file_path, struct_name, function_name)` in the same project overwrites the previous description.
 *   **Optimization Note:** Same SHA-256 dedup as `upsert_project_info` — unchanged descriptions skip embedding.
 
-### 4. `hybrid_search_memory`
+### 5. `hybrid_search_memory`
 *   **Purpose:** Executes an ultra-fast hybrid search combining dense semantic vectors and exact keyword matches (BM25) over the stored project repository knowledge. Search is always scoped to one project (or all with `"*"`).
 *   **Parameters:**
     *   `query` (string): Natural language query or exact function/variable name.
@@ -43,10 +50,10 @@ description: This skill provides the AI agent with a high-performance, persisten
     *   `project` (string, optional): Project scope; defaults to the server's `PROJECT_NAME`. Pass `"*"` to search across all projects.
 *   **Output:** matches are listed as `[project:category] id (distance)` followed by the stored content.
 
-### 5. `optimize_database`
+### 6. `optimize_database`
 *   **Purpose:** Triggers file compaction, merges small Arrow record batches, and garbage-collects historical timeline versions within the DB table to optimize disk I/O and maintain low-latency lookups.
 
-### 6. `memory_stats`
+### 7. `memory_stats`
 *   **Purpose:** Reports memory usage statistics — total record count, per-category breakdown, and content size (total/avg chars) — so you can watch how full the memory is without reading every record.
 *   **Parameters:**
     *   `project` (string, optional): Project scope; defaults to the server's `PROJECT_NAME`. Pass `"*"` to aggregate all projects (reply includes a per-project breakdown).
@@ -56,7 +63,7 @@ description: This skill provides the AI agent with a high-performance, persisten
 
 *   One database serves several projects: every record carries a `project` column.
 *   **Default:** when you omit `project`, the server uses its `PROJECT_NAME` env value (`default` if unset). Reads and writes never leak across projects unless you explicitly pass `"*"` (search/stats only).
-*   **Rule:** always pass the current project name explicitly in `upsert_project_info`, `save_file_description`, `save_function_description`, `hybrid_search_memory`, and `memory_stats` when the session's project differs from the server default. Never invent project names — use the repository/project name you are working in.
+*   **Rule:** always pass the current project name explicitly in `upsert_project_info`, `delete_project_info`, `save_file_description`, `save_function_description`, `hybrid_search_memory`, and `memory_stats` when the session's project differs from the server default. Never invent project names — use the repository/project name you are working in.
 *   **Cross-project lookup:** pass `project: "*"` to `hybrid_search_memory` / `memory_stats` when the user asks to search everywhere; the reply shows which project each hit belongs to (`[project:category]`).
 
 ## Operational Rules & Behavioral Guidelines

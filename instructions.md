@@ -72,4 +72,4 @@ Use it strategically to minimize context window usage and speed up inference acc
 *   Always pass the current project name explicitly when it differs from the server default. Use the repository/project name you are working in — never invent project names.
 *   Use `project: "*"` only for cross-project search/stats on explicit user request; the reply shows each hit's project as `[project:category]`.
 
-Optimize local GPU resources: Do not perform repetitive upserts if you know the file or concept contents have not changed.
+Optimize local GPU resources: Do not perform repetitive upserts if you know the file or concept contents have not changed. Use `delete_project_info` (`info_id`, optional `project`) to remove a stale record by `(id, project)`.

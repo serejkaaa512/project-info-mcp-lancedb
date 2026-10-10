@@ -181,6 +181,7 @@ On startup the server opens the `project_memory` table, or creates it with the A
 | Tool | Arguments | What it does |
 |---|---|---|
 | `upsert_project_info` | `info_id`, `content`, `category`, `project?` (defaults to `PROJECT_NAME`) | Hashes `content` (SHA-256); skips inference if hash matches existing `(id, project)` row; otherwise embeds content via `EmbeddingActor` and adds an Arrow record with current unix timestamp. |
+| `delete_project_info` | `info_id`, `project?` (defaults to `PROJECT_NAME`) | Deletes the record matching `(id, project)`; replies `✅ deleted` or `ℹ️ not found`. |
 | `save_file_description` | `file_path`, `description`, `project?` (defaults to `PROJECT_NAME`) | Upserts a `file`-category record keyed by `(file path, project)`; unchanged descriptions skip embedding, re-saving overwrites. |
 | `save_function_description` | `file_path`, `function_name`, `struct_name?`, `description`, `project?` | Upserts a `function`-category record; SHA-256 dedup skips embedding when unchanged, re-saving overwrites. |
 | `hybrid_search_memory` | `query`, `limit`, `category?`, `project?` (defaults to `PROJECT_NAME`; `"*"` searches all projects) | Embeds `query`, ensures an FTS index on `content`, then runs a hybrid nearest-neighbor query scoped to `project` (unless `"*"`) plus optional `category` filter. Returns matches as `[project:category] id (distance)` plus `content`. |

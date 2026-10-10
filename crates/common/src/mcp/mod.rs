@@ -1,6 +1,7 @@
 //! MCP server plumbing: tool registry and request dispatch.
 #![allow(clippy::enum_variant_names)]
 
+pub mod delete;
 pub mod optimize;
 pub mod save_file;
 pub mod save_function;
@@ -24,6 +25,7 @@ use rust_mcp_sdk::schema::{
 use rust_mcp_sdk::{McpServer, RequestContext, tool_box};
 
 use crate::actors::project_info::ProjectInfoActor;
+use crate::mcp::delete::DeleteProjectInfo;
 use crate::mcp::optimize::OptimizeProjectInfo;
 use crate::mcp::save_file::SaveFileDescription;
 use crate::mcp::save_function::SaveFunctionDescription;
@@ -36,6 +38,7 @@ tool_box!(
     MemoryTools,
     [
         UpsertProjectInfo,
+        DeleteProjectInfo,
         SearchProjectInfo,
         OptimizeProjectInfo,
         SaveFileDescription,
@@ -92,6 +95,7 @@ impl ServerHandler for MemoryToolHandler {
         let tool = MemoryTools::try_from(params).map_err(CallToolError::new)?;
         let text = match tool {
             MemoryTools::UpsertProjectInfo(args) => upsert::execute(self.actor.clone(), args).await,
+            MemoryTools::DeleteProjectInfo(args) => delete::execute(self.actor.clone(), args).await,
             MemoryTools::SaveFileDescription(args) => {
                 save_file::execute(self.actor.clone(), args).await
             }
@@ -351,6 +355,7 @@ impl MemoryToolHandler {
         })?;
         let text = match tool {
             MemoryTools::UpsertProjectInfo(args) => upsert::execute(self.actor.clone(), args).await,
+            MemoryTools::DeleteProjectInfo(args) => delete::execute(self.actor.clone(), args).await,
             MemoryTools::SaveFileDescription(args) => {
                 save_file::execute(self.actor.clone(), args).await
             }
