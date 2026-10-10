@@ -7,6 +7,7 @@ use sha2::{Digest, Sha256};
 
 use crate::actors::UpsertMessage;
 use crate::actors::project_info::ProjectInfoActor;
+use crate::categories;
 use crate::store::Record;
 
 impl Message<UpsertMessage> for ProjectInfoActor {
@@ -21,8 +22,10 @@ impl Message<UpsertMessage> for ProjectInfoActor {
         _ctx: &mut Context<Self, Self::Reply>,
     ) -> Self::Reply {
         let project = self.resolve_project(&msg.project);
+        let category = categories::normalize(&msg.category);
+        let enriched = categories::enrich_content(&category, &msg.content);
         let mut hasher = Sha256::new();
-        hasher.update(msg.content.as_bytes());
+        hasher.update(enriched.as_bytes());
         let current_hash = hex::encode(hasher.finalize());
 
         if !self
@@ -38,7 +41,7 @@ impl Message<UpsertMessage> for ProjectInfoActor {
 
         let vector = self
             .embedder
-            .embed(&msg.content)
+            .embed(&enriched)
             .await
             .map_err(|e| e.to_string())?;
 
@@ -52,8 +55,8 @@ impl Message<UpsertMessage> for ProjectInfoActor {
                 Record {
                     id: &msg.id,
                     project: &project,
-                    content: &msg.content,
-                    category: &msg.category,
+                    content: &enriched,
+                    category: &category,
                     file_hash: &current_hash,
                     timestamp,
                 },

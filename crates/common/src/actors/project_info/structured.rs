@@ -4,6 +4,7 @@ use kameo::message::{Context, Message};
 
 use crate::actors::project_info::ProjectInfoActor;
 use crate::actors::{SearchHit, StatsData, StatsStructuredMessage, StructuredSearchMessage};
+use crate::categories;
 
 impl Message<StatsStructuredMessage> for ProjectInfoActor {
     type Reply = Result<StatsData, String>;
@@ -30,14 +31,16 @@ impl Message<StructuredSearchMessage> for ProjectInfoActor {
         _ctx: &mut Context<Self, Self::Reply>,
     ) -> Self::Reply {
         let project = self.resolve_project(&msg.project);
+        let category = msg.category.as_deref().map(categories::normalize);
+        let expanded = categories::enrich_query(&msg.query, category.as_deref());
         let query_vector = self
             .embedder
-            .embed(&msg.query)
+            .embed(&expanded)
             .await
             .map_err(|e| e.to_string())?;
 
         self.store
-            .search_structured(query_vector, &project, msg.category.as_deref(), msg.limit)
+            .search_structured(query_vector, &project, category.as_deref(), msg.limit)
             .await
     }
 }

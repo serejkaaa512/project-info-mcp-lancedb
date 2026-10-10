@@ -18,12 +18,13 @@ pub struct UpsertProjectInfo {
     /// `thiserror`/`anyhow`, import grouping,
     /// `///` docs, QA workflow).
     pub content: String,
-    /// Record category (for example,
-    /// 'architecture', 'codestyle', 'file',
-    /// 'function', 'todo', 'api', 'changelog',
-    /// etc.). Use 'codestyle' for code style rules
-    /// (one rule per record, e.g. naming, error
-    /// handling, import grouping, QA workflow).
+    /// Record category: architecture (design/ADRs: recall before refactoring),
+    /// codestyle (one rule per record: recall before writing code),
+    /// file (per-file: find which file implements a feature),
+    /// function (per-function: find callers/params),
+    /// code_contract (interfaces/types: recall before integration),
+    /// todo (debt/bugs: plan work), changelog (history: recall what changed).
+    /// Aliases like 'api' are normalized.
     pub category: String,
     /// Project scope; defaults to the server's
     /// PROJECT_NAME when omitted.

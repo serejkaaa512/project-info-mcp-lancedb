@@ -12,7 +12,7 @@ description: This skill provides the AI agent with a high-performance, persisten
 *   **Parameters:**
     *   `info_id` (string): Unique identifier — snake_case for concepts (e.g., `jwt_validation_logic`). Relative file paths are reserved for `save_file_description`, because ids are unique per project (see `project` below).
     *   `content` (string): The distilled code snippet, architectural summary, or text block to remember.
-    *   `category` (string): Strict isolation scope. Must be one of: `architecture`, `codestyle`, `file`, `function`, `code_contract`, `todo`, `changelog`.
+    *   `category` (string): Strict isolation scope with use-case. Must be one of: `architecture` (recall design/ADRs before refactoring), `codestyle` (recall rules before writing code), `file` (find which file implements a feature), `function` (find callers/params), `code_contract` (recall interfaces/types before integration), `todo` (plan work/track bugs), `changelog` (recall what changed). Aliases like `api` normalize to `code_contract`. Saved content is auto-enriched with a Use-cases trailer for smart hybrid search.
     *   `project` (string, optional): Project scope. Defaults to the server's `PROJECT_NAME` when omitted. The dedup key is `(info_id, project)`, so the same id can exist in many projects without collision.
 *   **Optimization Note:** The underlying Rust actor computes a SHA-256 hash before executing. If the data is identical, the GPU text embedding inference is skipped automatically.
 
@@ -45,7 +45,7 @@ description: This skill provides the AI agent with a high-performance, persisten
 *   **Purpose:** Executes an ultra-fast hybrid search combining dense semantic vectors and exact keyword matches (BM25) over the stored project repository knowledge. Search is always scoped to one project (or all with `"*"`).
 *   **Parameters:**
     *   `query` (string): Natural language query or exact function/variable name.
-    *   `category` (string, optional): Filters the search strictly to a specific metadata category to narrow scope.
+    *   `category` (string, optional): Filters the search strictly to a specific metadata category to narrow scope. Pick by use-case: `architecture` for design, `codestyle` for rules before writing code, `file`/`function` for symbol lookup, `code_contract` for interfaces, `todo`/`changelog` for plans/history. The query is auto-expanded with category keywords for smart search.
     *   `limit` (integer): Maximum number of records to return (e.g., 10).
     *   `project` (string, optional): Project scope; defaults to the server's `PROJECT_NAME`. Pass `"*"` to search across all projects.
 *   **Output:** matches are listed as `[project:category] id (distance)` followed by the stored content.

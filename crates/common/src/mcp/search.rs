@@ -12,11 +12,11 @@ pub struct SearchProjectInfo {
     /// handling', 'import grouping', 'qa workflow')
     /// together with category 'codestyle'.
     pub query: String,
-    /// Record category filter (for example, 'file',
-    /// 'architecture', 'codestyle', 'todo',
-    /// 'changelog', etc.). Use 'codestyle' to recall
-    /// code style rules before writing or editing
-    /// code.
+    /// Record category filter with use-case: architecture (recall design),
+    /// codestyle (recall rules before writing code),
+    /// file (find which file implements a feature),
+    /// function (find callers/params), code_contract (recall interfaces),
+    /// todo (plan work), changelog (recall what changed).
     pub category: Option<String>,
     /// Maximum number of results to return.
     pub limit: u64,

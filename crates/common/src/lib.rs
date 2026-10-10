@@ -3,6 +3,7 @@
 //! trait implemented by each storage backend (LanceDB, Qdrant).
 
 pub mod actors;
+pub mod categories;
 pub mod config;
 pub mod mcp;
 pub mod store;

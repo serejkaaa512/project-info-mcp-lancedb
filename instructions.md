@@ -11,13 +11,13 @@ Use it strategically to minimize context window usage and speed up inference acc
 *   **Project scope (`project`, optional):** omitting it uses the server's `PROJECT_NAME` default. Always pass the current project name explicitly when it differs from the server default, so records land in the right project.
 
 ### 2. How to Categorize Data (`category`):
-*   `architecture` — Database schemas, API contracts, module dependencies, and ADRs.
-*   `codestyle` — Code style rules and conventions: naming (snake_case, CamelCase, SCREAMING_SNAKE_CASE), formatting/linting (rustfmt, clippy), idiomatic patterns (prefer `?` over `match`, `if let` over single-arm `match`, iterator chains over manual loops), error handling (`thiserror`/`anyhow`, `From` conversions), import grouping, doc comments (`///`), and mandatory QA (`cargo fmt`, `cargo clippy`, `cargo test --all`). Save one focused rule per record so each is retrievable on its own.
-*   `code_contract` — Interfaces, core structures, data types, and exchange protocols.
-*   `file` — One record per project file: a short description of the file's content (written by `save_file_description`, `info_id` = relative file path).
-*   `function` — One record per function/method: a short description of what it does (written by `save_function_description`, `info_id` = `<file_path>::<function_name>` or `<file_path>::<struct_name>::<function_name>`).
-*   `todo` — Technical debt, planned features, and discovered bugs.
-*   `changelog` — A historical log of tasks you have completed (what was changed, how, and why).
+*   `architecture` — Database schemas, API contracts, module dependencies, and ADRs. Use-case: recall module boundaries before refactoring; check contracts before changing endpoints.
+*   `codestyle` — Code style rules and conventions: naming (snake_case, CamelCase, SCREAMING_SNAKE_CASE), formatting/linting (rustfmt, clippy), idiomatic patterns (prefer `?` over `match`, `if let` over single-arm `match`, iterator chains over manual loops), error handling (`thiserror`/`anyhow`, `From` conversions), import grouping, doc comments (`///`), and mandatory QA (`cargo fmt`, `cargo clippy`, `cargo test --all`). Save one focused rule per record so each is retrievable on its own. Use-case: recall before writing/editing code.
+*   `code_contract` — Interfaces, core structures, data types, and exchange protocols. Use-case: recall struct fields and protocol shapes before integration. Alias `api` normalizes here.
+*   `file` — One record per project file: a short description of the file's content (written by `save_file_description`, `info_id` = relative file path). Use-case: find which file implements a feature.
+*   `function` — One record per function/method: a short description of what it does (written by `save_function_description`, `info_id` = `<file_path>::<function_name>` or `<file_path>::<struct_name>::<function_name>`). Use-case: find callers, params, and side effects.
+*   `todo` — Technical debt, planned features, and discovered bugs. Use-case: plan next work.
+*   `changelog` — A historical log of tasks you have completed (what was changed, how, and why). Use-case: recall what changed and why.
 
 ### 3. How to Save Codestyle Rules (`upsert_project_info` with `category: "codestyle"`):
 *   **When:** on first onboarding to a project (extract rules from linters, formatters, and contribution guides such as `Cargo.toml`/`clippy.toml`/`rustfmt.toml`, `AGENTS.md`, README guidelines), and whenever a convention is added or changed.
