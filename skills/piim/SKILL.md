@@ -46,7 +46,7 @@ description: This skill provides the AI agent with a high-performance, persisten
 *   **Parameters:**
     *   `query` (string): Natural language query or exact function/variable name.
     *   `category` (string, optional): Filters the search strictly to a specific metadata category to narrow scope. Pick by use-case: `architecture` for design, `codestyle` for rules before writing code, `file`/`function` for symbol lookup, `code_contract` for interfaces, `todo`/`changelog` for plans/history. The query is auto-expanded with category keywords for smart search.
-    *   `limit` (integer): Maximum number of records to return (e.g., 10).
+    *   `limit` (integer, required): Maximum number of records to return (e.g., 10). Always pass an explicit value — the server has no default and the call fails if omitted.
     *   `project` (string, optional): Project scope; defaults to the server's `PROJECT_NAME`. Pass `"*"` to search across all projects.
 *   **Output:** matches are listed as `[project:category] id (distance)` followed by the stored content.
 
@@ -76,6 +76,7 @@ description: This skill provides the AI agent with a high-performance, persisten
 *   Categorize data with precision to maintain efficient SQL metadata filtering on the DB engine:
     *   Use `file` for per-file content descriptions written via `save_file_description` (id = relative file path).
     *   Use `function` for per-function descriptions written via `save_function_description` (id = `<file_path>::<function_name>` or `<file_path>::<struct_name>::<function_name>`).
+*   **Convenience wrappers vs. raw upsert:** `save_file_description` and `save_function_description` are specialized helpers that handle ID formatting (`file_path`, `<file_path>::<function_name>`) and category tagging (`file` / `function`) under the hood. Prefer them over `upsert_project_info` for files/functions. Use `upsert_project_info` with `category: "file"` / `"function"` directly only for custom batch operations where you manage the ID format yourself.
     *   Use `architecture` for configuration formats, core dependencies, API endpoint signatures, and ADRs.
     *   Use `codestyle` for code style rules and conventions — one focused rule per record via `upsert_project_info` (e.g., `rust_naming_conventions`, `rust_error_handling`, `rust_import_grouping`, `rust_qa_workflow`). Content must state the rule, what to avoid, and a minimal good/bad example, and include the keywords future queries will use (naming, clippy/rustfmt, `?`/`if let`/iterator chains, `thiserror`/`anyhow`, import grouping, `///` docs, `cargo fmt`/`cargo clippy`/`cargo test --all`). Search it with `hybrid_search_memory` + `category: "codestyle"` before writing or editing code.
     *   Use `code_contract` for internal types, interfaces, traits, and shared state structures.
@@ -112,6 +113,7 @@ description: This skill provides the AI agent with a high-performance, persisten
 ### 6. Precision Token Matching
 *   When a user asks about specific system internals (e.g., *"Where do we validate JWT tokens?"*), do not guess. Invoke `hybrid_search_memory` with the method name or keyword. The hybrid FTS (Full-Text Search) engine will locate exact lexical matches, while the vector engine fetches surrounding semantic contexts.
 *   To find usages of a function, type, or constant across the project, call `hybrid_search_memory` with the symbol name as `query`: first with `category: "function"` for exact function descriptions, then with `category: "file"` for candidate files — open the top hits and grep for the symbol to confirm exact usages.
+*   **Exact ID retrieval:** there is no `get_project_info_by_id` tool — to fetch a known record (file path like `src/auth.rs` or function id like `src/auth.rs::validate_jwt`), call `hybrid_search_memory` with that id/symbol as `query` (plus its `category`: `"file"` / `"function"`). The FTS layer matches the id lexically; treat the top hit as the record.
 
 ### 7. How to Watch Memory Usage (`memory_stats`)
 *   Call `memory_stats` with optional `project` (defaults to the server's `PROJECT_NAME`; `"*"` aggregates all projects with a per-project breakdown) to see record count, per-category breakdown, and content size (total/avg chars) — no embedding inference, so it is cheap.
